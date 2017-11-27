@@ -213,7 +213,7 @@ head(resultados)
 
 A partir da análise exploratória que foi realizada com o objetivo de compreender melhor a base de dados e da modelagem propriamente dita foi possível chegar a previsões muito boas do preço das propriedades.
 Com mais tempo seria interessante utilizar de ferramentar como grid search para melhorar ainda mais o desempenho dos modelos e até estudar com mais calma os dados disponíveis.
-Segue em anexo o csv dos resultados obtidos.
+Segue em anexo o csv dos resultados obtidos. dd
 
 ```{r}
 write.csv(resultados,file = "/Users/rafaelzimba/Downloads/resultado.csv")
