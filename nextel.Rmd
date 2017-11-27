@@ -2,8 +2,7 @@
 title: "Nextel - Case"
 author: "Rafael Meirelles"
 output:
-  html_document: default
-  html_notebook: default
+  rmarkdown::github_document
 ---
 
 #Dependências
@@ -34,10 +33,7 @@ house_sales <- read_csv("~/Downloads/data_scientist_test/house_sales.csv")
 #EDA - Análise Descritiva
 
 Nesse gráfico (para análise ampliei o plot para melhor vizualização) tentaremos observar quais as varáveis possuem notável correlação a ser considerada  com a variável resposta (preço) e ainda eventuais variáveis que contém informações equivalentes. Em seguida a matriz de correlação é mostrada com o objetivo de quantificar essas relações:
-```{r}
-plot(house_sales)
-cor(house_sales)
-```
+
 
 
 Observa-se que algumas variáveis referentes a especificações das propriedades em questão apresentam relação direta (correlação positiva) em níveis bastante expressivos como é o caso de número de quartos, número de banheiros , tamaho da casa, andares, presença de fonte e tamanho do porão  (0.30, 0.52, 0.70, 0.25, 0.27, 0.32 respectivamente). Tais variáveis tem sua relação com o preço da casa facilmente justificado e provavelmente são considerados pelo comprador no momento da compra. Observamos ainda que existe uma considerável correlação entre essas variáveis já que, por exemplo, casas com muitos quartos tendem a ter muitos banheiros. É importante considerar essa informação para evitar problemas como colinearidade durante a modelagem. Observe no exemplo a seguir como seria um ajuste do preço da propriedade pelo tamanho da mesma:
@@ -178,52 +174,4 @@ print(paste("RMSE obtido no conjunto de teste com KNN usando k = 15:",rmse(actua
 ```
 
 Observa-se que o melhor resultado obtido aconteceu com k = 7. Mas o desempenho ainda foi inferior ao obtido por meio de Random Forest.
-
-
-
-#XGBoost
-
-```{r}
-ajuste_xgboost <- xgboost(data = as.matrix(norm_train[,2:19]), label = as.matrix(norm_train[,1]), max_depth = 3, eta = 0.6, nthread = 2, nrounds = 500, objective = "reg:linear")
-
-```
-
-```{r}
-predict_xgboost = predict(object = ajuste_xgboost, as.matrix(norm_test))
-
-print(paste("RMSE obtido no conjunto de teste XGBOOST:",rmse(actual = test[,"price"],predict_xgboost)))
-
-```
-
-
-Observa-se um grave problema de overfitting nesse ajuste que deve ser resolvido com parameter tunning, o que leva um tempo  para ser feito e fica para uma próxima versão.
-
-
-#Resultados Consolidados
-
-```{r}
-resultados = cbind(real = test[,1],predict_lm,predict_rf,predict_knn = predict_knn_7$pred,predict_xgboost)
-
-head(resultados)
-```
-
-
-
-#Conclusão
-
-A partir da análise exploratória que foi realizada com o objetivo de compreender melhor a base de dados e da modelagem propriamente dita foi possível chegar a previsões muito boas do preço das propriedades.
-Com mais tempo seria interessante utilizar de ferramentar como grid search para melhorar ainda mais o desempenho dos modelos e até estudar com mais calma os dados disponíveis.
-Segue em anexo o csv dos resultados obtidos. dd
-
-```{r}
-write.csv(resultados,file = "/Users/rafaelzimba/Downloads/resultado.csv")
-```
-
-
-
-
-
-
-
-
 
